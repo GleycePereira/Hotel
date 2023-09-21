@@ -1,0 +1,536 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="Página de Java Script, usando operadores matemáticos, simulando um programa de hotel">
+    <meta name="keywords" content="Java Script, operadores matemáticos, codar"> 
+    <meta name="author" content="Gleyce Pereira">
+    <link rel="icon" type="image/x-icon" href="hotel.png">
+    <title>Document</title>
+
+    <style>
+        body{
+            background-image: url("hotel_entrada.jpg");
+            background-size: cover;
+        }
+    </style>
+</head>
+<body>
+    <script>
+        // escopo global
+        var nome;
+        cadastros = ["Renato Augusto \n"+"Murilo dos Santos\n"+"Tamires Gomes\n"+"Gabrielle Portilho"];
+        var reservas = [{
+            dia: "SEX",
+            horario: 20,
+            empresa: "Fantasia Corp"
+        }]
+        
+
+        var hotel = alert("Olá, somos o Hotel Noite Eterna");
+        entrar_hotel();
+
+        function entrar_hotel(){
+                nome = prompt("Qual seu nome?");
+                var senha = parseInt(prompt("Digite a senha:"));
+
+                if (senha === 2678) {
+                    alert("Bem vindo ao Hotel Imaginação, " + nome + ". É um imenso prazer ter você por aqui");
+                    inicio();
+                } else {
+                    alert("Acesso negado");
+                    entrar_hotel();
+                }
+            }
+
+        function erro(){
+            alert("Por favor digite um número");
+        }
+
+        function inicio() {
+
+            var escolha = parseInt(prompt('Selecione uma opção\n'+'1.Reserva quarto\n 2.Solicitar diária\n 3.Cadastro hóspedes\n 4.Eventos\n 5.Buffet\n 6.Auditório\n 7.Reserva eventos\n 8.Abastecer\n 9.Ar-condicionados\n 0.Sair'));
+
+            switch (escolha){
+                case 1:
+                reserva_quarto();
+                break
+
+                case 2:
+                    solicitar_diaria();
+                break;
+
+                case 3: 
+                    cadastro_hospedes();
+                break;
+
+                case 4: 
+                    eventos();
+                break;
+
+                case 5:
+                    buffet();
+                break;
+
+                case 6:
+                    auditorio();
+                break;
+
+                case 7:
+                    reserva_eventos();
+                break;
+
+                case 8: 
+                    abastecer();
+                break;
+
+                case 9: 
+                    ar_condicionado();
+                break;
+
+                case 0: 
+                    alert("Muito obrigado e até logo, "+nome);
+                break;
+
+                default:
+                    erro();
+                break;
+
+            };
+        };
+
+        // atividade 1
+        function reserva_quarto() {
+            var valor_diaria = parseFloat(prompt("Qual o valor da diária?"));
+
+            if (isNaN(valor_diaria) || valor_diaria <= 0) {
+                alert("Informe um valor válido para o valor da diária.");
+                reserva_quarto();
+            };
+            // o else if só é executado se a condição do if não for verdadeira
+            var diaria = parseInt(prompt("Quantas diárias serão necessárias?"));
+
+            if (isNaN(diaria) || diaria <=0) {
+                alert("Informe um valor válido");
+                reserva_quarto();
+            }if (diaria >30){
+                alert("A diária não pode ultrapassar de 30 dias");
+                reserva_quarto();
+            }
+            var valor_total = diaria * valor_diaria;
+            alert("O valor de " + diaria + " dias de hospedagem é de R$" + valor_total.toFixed(2));
+
+
+            var nome_hospede = prompt("Qual o nome do hóspede?");
+            var confirmar = prompt(nome + ", você confirma a hospedagem para " + nome_hospede + " por " + diaria + " dias?\nS/N");
+            if (confirmar === "S" || confirmar === "s") {
+                alert(nome + ", reserva efetuada para " + nome_hospede + ". O valor total é de R$" + valor_total.toFixed(2));
+                inicio();
+            }else if (confirmar === "N" || confirmar === "n"){
+                alert("Reserva não realizada para " + nome_hospede);
+                inicio();
+            };
+        };
+
+        // atividade 2
+        function solicitar_diaria() {
+            var valor_hospedagem = parseFloat(prompt("Digite o valor da hospedagem"));
+            var pessoas = [];
+
+            // Loop para receber os dados das pessoas
+            while (true) {
+                var hospede_nome = prompt("Digite o nome da pessoa\nDigite 'pare' para interromper");
+                if (hospede_nome === "pare" || hospede_nome ==="Pare" || hospede_nome ==="PARE"){
+                    break;
+                };
+
+                var idade = parseInt(prompt("Digite a idade da pessoa: "));
+                while (idade <=0 || isNaN(idade)) {
+                    alert("Idade inválida. Digite a idade da pessoa: ");
+                    solicitar_diaria();
+                };
+
+                pessoas.push({
+                hospede_nome,
+                idade,
+                });
+            }
+
+            // Arrow function () => pessoa.idade <= 6 pode ser substituida por uma função tradicional
+            // function verificaGratuidade(pessoa) {
+            // return pessoa.idade <= 6;
+            // }
+            // var quantidadePessoasGratuidade = pessoas.filter(verificaGratuidade);
+            // A função verificaGratuidade() tem a mesma assinatura da função de flecha. O corpo da função é uma expressão que retorna true se a idade da pessoa for menor ou igual a 6.
+
+            //filter() pessoas <=6, o metodo retorna um novo array com os elementos que atendem a condição. O número de elementos desse novo array é igual ao número de pessoas
+            // com gratuidade.
+            // lenght retorna o número de elementos dentro de um array
+
+            var qtd_gratuidade = pessoas.filter((pessoa) => pessoa.idade <= 6).length; 
+            var qdt_meia = pessoas.filter((pessoa) => pessoa.idade >= 60).length;
+            var qdt_inteira = pessoas.length - qtd_gratuidade - qdt_meia;
+
+            var total_hospedagem = valor_hospedagem * (qdt_inteira + qdt_meia / 2);
+            
+
+            alert(nome+",o valor total da hospedagem R$"+total_hospedagem+"\n"+qtd_gratuidade+" gratuidade(s)\n"+qdt_meia+" meia(s)\n"+qdt_inteira+" inteira(s)");
+
+
+            var confirmar = prompt("Confirma a reserva? S/N");
+            if (confirmar === "S" || confirmar === "s") {
+                alert("Hospedagem cadastrada com sucesso");
+                inicio();
+            }else{
+                alert("Hospagem não cadastrada")
+                inicio();
+            }
+        }
+
+
+        // atividade 3
+        function cadastro_hospedes(){
+
+            var selecionar = parseInt(prompt("Selecione uma opção\n 1.Cadastrar 2.Pesquisar 3.Lista de hóspedes 4.Sair"));
+
+            switch (selecionar){
+                case 1:
+                    if (cadastros.length >=12){
+                        alert("Números excedido");
+                        cadastro_hospedes();
+                    }else{
+                        var nome = prompt("Digite o nome e sobrenome do hóspede");
+                        cadastros.push(nome);
+                        alert(nome + " cadastrado(a) com sucesso");
+                        cadastro_hospedes();
+                    }
+                break;
+
+                case 2:
+                var nome = prompt("Informe o nome e sobrenome do hóspede");
+                nome = nome.trim();  //a função trim() é usada para remover os espaços em branco
+                if(cadastros.includes(nome)){
+                    alert(nome + " foi encontrado(a)");
+                    cadastro_hospedes();
+                }else{
+                    alert(nome + " não foi encontrado(a)");
+                    cadastro_hospedes();
+                }
+                break;
+
+                case 3: 
+                    alert(cadastros.join("\n"));  //o método join() para formatar um array de uma forma específica
+                    cadastro_hospedes();
+                break;
+
+                case 4:
+                   inicio();
+                break;
+
+                default: 
+                    erro();
+                break;
+
+            };
+        };
+
+        // atividade 4
+        function eventos(){
+            var horas = parseInt(prompt("Qual a duração do evento?"));
+            if (isNaN(horas) || horas <=0){
+                alert("Informe um horário");
+                eventos();
+            };
+
+            var garcom = parseInt(prompt("Quantos garçons serão necessários?"));
+
+            if (isNaN(garcom) || garcom <=0){
+                alert("Informe um horário");
+                eventos();
+            };
+
+            var custo = horas * garcom * 10.50;
+            
+            var resposta = prompt("O evento de " +horas+ " horas custará R$"+custo+"\n Gostaria de fazer a reserva? S/N");
+            if(resposta ==="S" || resposta ==="s"){
+                alert(nome+ ", reserva efetuada com sucesso");
+                inicio();
+            }else if (resposta ==="N" || resposta ==="n"){
+                alert(nome+ "reserva não efetuada");
+                inicio();
+            };
+        };
+
+        // atividade 5
+        function arrendodar_centena(numero){
+            return Math.ceil(numero /100)*100;
+        } //arrendondar o número para a próxima centena. O parâmetro (numero) é usado para receber o número a ser arredondado.
+        function buffet(){
+            var convidados = parseInt(prompt("Qual o número de convidados?"));
+            if (isNaN(convidados) || convidados <=0){
+                alert("Informe um valor");
+                buffet();
+            } else if (convidados >350){
+                alert("Quantidade de convidados superior à capacidade máxima");
+                buffet();
+            }
+
+            var cafe = convidados * 0.2;
+            var cafe_custo = 0.8*cafe;
+
+            var agua = convidados * 0.5;
+            var agua_custo = 0.4*(agua);
+
+            var salgados = arrendodar_centena(convidados * 7);
+            var salgados_custo = arrendodar_centena(0.34*(salgados));
+
+            var custo_total = cafe_custo+agua_custo+salgados_custo;
+
+            var custo = alert("O buffet precisará de "+cafe+" litros de café, "+agua+" litros de água, "+salgados+" salgados. Custo total será de R$"+custo_total.toFixed(2));
+
+            var reserva_b = prompt("Gostaria de efetuar a reserva? S/N");
+            if (reserva_b =="S" || reserva_b=="s"){
+                alert(nome+", reserva efetuada com sucesso")
+                inicio();
+            }else{
+                alert(nome+", reserva não efetuada");
+                inicio();
+            };
+        };
+
+        // atividade 6
+        // O auditório Laranja conta com 150 lugares e espaço para até 70 cadeiras adicionais. 
+        // O auditório Colorado conta com 350 lugares, sem espaço para mais cadeiras. 
+        function auditorio(){
+            var laranja = 150;
+            var colorado = 350;
+            var extra = 70;
+            var num_convidados = parseInt(prompt("Qual o número de convidados para o evento?"));
+
+            if(isNaN(num_convidados) || num_convidados <=0){
+                alert("Número inválido");
+                auditorio();
+            }else if (num_convidados>350){
+                alert("Quantidade de convidados superior à capacidade máxima");
+                auditorio();
+            }
+
+            //Comparação se os números de convidados com o laranja mais extra. Se for menor ou igual ao laranja retorna true, senão false
+            var incluir = num_convidados <=laranja + extra;
+            if(incluir){
+                var cadeira_extra = num_convidados - laranja;
+                if (cadeira_extra >=0){
+                    alert("Use o auditório Laranja (inclua "+cadeira_extra+" cadeiras)");
+                }else{
+                    alert("Use o auditório Laranja");
+                }
+            }else{
+                alert("Use o auditório Colorado");
+            }
+            
+            var confirmar_audi = prompt("Gostaria de efetuar a reserva?\nS/N");
+            if(confirmar_audi ==="S" || confirmar_audi ==="s"){
+                alert(nome+", reserva efetuada com sucesso");
+                inicio();
+            }else{
+                alert(nome+", resena não efetuada");
+                inicio();
+            };
+       
+        };
+
+        // atividade 7
+        //Seg a Sexta 7h às 23h / Sab e Dom das 7h às 15h
+        function reserva_eventos() {
+            var opcao_reserva = parseInt(prompt("Selecione uma opção\n1.Reservar 2.Lista de reservas 3.Sair"));
+
+            switch (opcao_reserva) {
+                case 1:
+                var dia_evento = prompt("Qual o dia do evento?\nSeg|Ter|Qua|Qui|Sex|Sab|Dom").toUpperCase();
+
+                // O operador ! na frente da expressão inverte a lógica, ou seja, torna verdadeira a condição quando dia_evento não estiver no array.
+                // includes verifica
+                if (!["SEG", "TER", "QUA", "QUI", "SEX", "SAB", "DOM"].includes(dia_evento)) {
+                    alert("Informe um dia da semana válido");
+                    reserva_eventos();
+                    return;
+                }
+
+                var horario_evento = parseInt(prompt("Qual o horário do evento?"));
+
+                if (isNaN(horario_evento) || horario_evento < 7 || (dia_evento !== "SAB" && dia_evento !== "DOM" && horario_evento > 23) || ((dia_evento === "SAB" || dia_evento === "DOM") && horario_evento > 15)) {
+                    alert("Atenção ao horário de funcionamento\nSeg a Sex: 7h até 23h\nSab e Dom: 7h até 15h");
+                    reserva_eventos();
+                    return;
+                }
+
+                // Verificar se já existe uma reserva com o mesmo dia e horário
+                var reservaExistente = reservas.find(function (reserva) {
+                    return reserva.dia === dia_evento && reserva.horario === horario_evento;
+                });
+
+                if (reservaExistente) {
+                    alert("Já existe uma reserva para " + reservaExistente.empresa + " no dia " + dia_evento + " às " + horario_evento + "h");
+                    reserva_eventos();
+                    return;
+                }
+
+                var empresa_evento = prompt("Qual o nome da empresa?");
+                
+                var confirmar_evento = confirm("Gostaria de fazer a reserva para " + empresa_evento);
+                if (confirmar_evento) {
+                    var confirmacao = {
+                    // propriedade de um objeto
+                    dia: dia_evento,
+                    horario: horario_evento, 
+                    empresa: empresa_evento
+                    };
+                    reservas.push(confirmacao);
+                    alert("Restaurante confirmado para " + empresa_evento + "\n" + dia_evento + " às " + horario_evento + "h");
+                    reserva_eventos();
+                } else {
+                    alert("Reserva não efetuada");
+                    reserva_eventos();
+                }
+                break;
+
+                case 2:
+                if (reservas.length === 0) {
+                    alert("Não há reservas disponíveis");
+                } else {
+                    var lista_reservas = "Reservas existentes:\n";
+
+                    for (var i = 0; i < reservas.length; i++) {
+                    lista_reservas += reservas[i].empresa + " - " + reservas[i].dia + " às " + reservas[i].horario + "h\n";
+                    }
+
+                    alert(lista_reservas);
+                    reserva_eventos(); // Voltar para a opção de reserva
+                }
+                break;
+
+                case 3:
+                    inicio();
+                break;
+
+                default: 
+                    erro();
+                    reserva_eventos();
+                break;
+            };
+            
+        };
+
+        function abastecer(){
+            var gasolina_wayne = parseFloat(prompt("Informe o valor da gasolina no posto Wayne Oil"));
+            if(isNaN(gasolina_wayne) || gasolina_wayne <=0){
+                erro();
+                inicio();
+            };
+                    
+            var alcool_wayne = parseFloat(prompt("Informe o álcool no posto Wayne Oil")); 
+            if(isNaN(alcool_wayne) || alcool_wayne <=0){
+                erro();
+                inicio();
+            };
+             
+            var gasolina_stark = parseFloat(prompt("Informe o valor da gasolina no posto Stark Petrol"));
+            if (isNaN(gasolina_stark) || gasolina_stark <=0){
+                erro();
+                inicio();
+            };
+
+            var alcool_stark = parseFloat(prompt("Informe o álcool no posto Stark Petrol"));
+            if (isNaN(alcool_stark) || alcool_stark <=0){
+                erro();
+                inicio();
+            };
+
+            var menor_gasolina = Math.min(gasolina_stark,gasolina_wayne);
+            var menor_alcool = Math.min(alcool_stark,alcool_wayne);
+            var combustivel_barato = Math.min(menor_alcool,menor_gasolina);
+
+            var posto = "";
+            if(combustivel_barato === gasolina_wayne){
+                posto = "gasolina no Wayne Oil";
+            }else if (combustivel_barato === alcool_wayne){
+                posto = "álcool no Wayne Oil";
+            }else if (combustivel_barato === gasolina_stark){
+                posto = "gasolina no Stark Petrol";
+            }else if (combustivel_barato === alcool_stark){
+                posto = "álcool no Stark Petrol";
+            }
+
+            alert(nome+", é mais barato abastecer com "+posto+" por R$"+combustivel_barato);
+            inicio();
+
+        };
+
+        function ar_condicionado() {
+            var empresas_ar = [];
+        
+            while (true) {
+                var empresa_nome = prompt("Qual o nome da empresa?");
+                // Sai do loop se o usuário cancelar ou deixar em branco
+                if (!empresa_nome) {
+                    break;
+                };
+        
+                var valor_empresa = parseFloat(prompt("Informe o valor por aparelho"));
+                if (isNaN(valor_empresa) || valor_empresa <= 0) {
+                    erro();
+                };
+        
+                var qtd_aparelhos = parseInt(prompt("Informe a quantidade de aparelhos"));
+                if (isNaN(qtd_aparelhos) || qtd_aparelhos <= 0) {
+                    erro();
+                };
+        
+                var porcentagem = parseInt(prompt("Informe a porcentagem de desconto"));
+                if (isNaN(porcentagem) || porcentagem <= 0) {
+                    erro();
+                };
+        
+                var min_aparelhos = parseInt(prompt("Informe o número mínimo de aparelhos para conseguir o desconto"));
+                if (isNaN(min_aparelhos) || min_aparelhos <= 0) {
+                    erro();
+                };
+        
+                var orcamento;
+                if (qtd_aparelhos >= min_aparelhos) {
+                    orcamento = qtd_aparelhos * valor_empresa * (1 - porcentagem / 100);
+                } else {
+                    orcamento = qtd_aparelhos * valor_empresa;
+                };
+                // Um objeto criado com duas propriedades. Armazenar o nome da mepresa e o valor calculado, adiciona no array usando push
+                empresas_ar.push({ nome: empresa_nome, orcamento: orcamento });
+        
+                alert("O serviço da empresa " + empresa_nome + " custará R$ " + orcamento);
+        
+                var novos_dados = prompt("Deseja informar novos dados, " +nome+"?\nS/N");
+                if (novos_dados === "N" || novos_dados === "n") {
+                    break; //sair do loop
+                };
+            };
+        
+            if (empresas_ar.length > 0) {
+                //Reduce encontrar a empresa de menor orçamento, definida com função que aceita dois parâmetros:menor e empresa.
+                //Compara o orçamento da empresa atual com o valor acumulado até o momento
+                var menor_orcamento = empresas_ar.reduce(function (menor, empresa) {
+                    return empresa.orcamento < menor.orcamento ? empresa : menor;
+                    //Compara o valorda empresa atual(empresa.orcamento) com o valor da orçamento da empresa que até agora tem o menor valor(menor.orcamento)
+                    //A sintaxe é: [ condição a testar ] ? [ resposta se verdadeiro ] : [ resposta se não verdadeiro ]
+                });
+                // se a expressão empresa.orcamento < menor.orcamento for verdadeira (ou seja, se a empresa atual tiver um orçamento menor), a variável empresa é retornada como o novo valor acumulado (ou seja, a empresa atual é a nova empresa com o menor orçamento).
+                // Se a expressão empresa.orcamento < menor.orcamento for falsa (ou seja, se a empresa atual não tiver um orçamento menor), a variável menor é retornada como o valor acumulado (ou seja, a empresa anterior com o menor orçamento ainda é a empresa com o menor orçamento).
+        
+                alert("A empresa com o menor orçamento é " + menor_orcamento.nome + " R$" + menor_orcamento.orcamento.toFixed(2));
+            } else {
+                alert("Nenhuma empresa foi informada.");
+            };
+        };
+
+    </script>
+</body>
+</html>
