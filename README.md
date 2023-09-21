@@ -15,3 +15,6 @@ O hotel foi feito para aprender a desenvolver a lógica de programação atravé
 - 8.Abastecer: dois postos de combustíveis são conveniados pelo hotel, informe o valor do álcool e da gasolina entre os dois postos indicando o mais barato
 - 9.Ar condicionado: a manutenção dos ar-condicionados no hotel é realizada por empresas terceirizadas que, em alguns casos, oferecem desconto quando o serviço é realizado em uma quantidade determinada de aparelhos. Informe o valor cobrado por aparelho, a quantidade, a porcentagem e o número minímo de equipamentos para o desconto, identifique o menor preço entre as empresas
 - 0.Sair: exibir uma mensagem agradecendo ao usuário
+
+# Acesse a página aqui
+https://gleycepereira.github.io/Hotel/
